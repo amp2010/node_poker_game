@@ -1,7 +1,8 @@
 'use strict';
 
-import App from './app'
+//import App from './app'
+var App = require('./app');
 
-let app = new App();
+//let app = new App();
 
-app.test();
+App.test();
