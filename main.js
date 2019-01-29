@@ -1,8 +1,7 @@
 'use strict';
 
-//import App from './app'
-var App = require('./app');
+const App = require('./app.js');
 
-//let app = new App();
+let app = new App();
 
-App.test();
+app.test();
