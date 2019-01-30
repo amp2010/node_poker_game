@@ -1,10 +1,17 @@
 'use strict';
 
+const rl = require('./services/readline.js');
+
 class App {
 
-    test(){
-        console.log("yao");
+    async test(){
+        let value = await rl.read("gros ? ");
+        console.log(value);
     }
 }
+
+
+
+
 
 module.exports = App;
