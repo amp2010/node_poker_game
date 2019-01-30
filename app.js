@@ -1,17 +1,22 @@
 'use strict';
 
-const rl = require('./services/readline.js');
+const UserInput = require('./services/UserInput.js');
 
 class App {
 
-    async test(){
-        let value = await rl.read("gros ? ");
-        console.log(value);
+
+    async start(){
+
+        let gameType;
+        do {
+            gameType = await UserInput.read("Game type () : ");
+            console.log(gameType + " chosen");
+        } while (gameType !== "b");
+
+
+        let playerNumber = await UserInput.read("Players number (2-8) : ");
+        console.log(playerNumber + " game");
     }
 }
-
-
-
-
 
 module.exports = App;
