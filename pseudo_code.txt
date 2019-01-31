@@ -1,0 +1,24 @@
+ask game choice (factory of games ?)
+    - other choices not implemented
+
+ask players number
+    - get players number from the game choice
+
+create game from factory, send chosen player count
+
+create card deck (from factory ?)
+
+
+start game
+    distribute cards
+        - one for each players twice
+
+    show 3 cards
+    burn one
+    show 1 card
+    burn one
+    show 1 card
+
+check winner (chaine de resp ?)
+
+ask for another game
