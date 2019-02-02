@@ -1,6 +1,7 @@
 'use strict';
 
 const UserInput = require('./services/UserInput.js');
+const Deck = require('./deck.js');
 
 class App {
 
@@ -11,6 +12,7 @@ class App {
         let playersNumber = await this.askPlayersNumber();
 
         console.log(gametype, playersNumber);
+        console.log(Deck.CreateDeck());
     }
 
     async askGameType(){
