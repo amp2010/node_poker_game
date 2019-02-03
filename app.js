@@ -2,32 +2,54 @@
 
 const UserInput = require('./services/UserInput.js');
 const Deck = require('./deck.js');
+const GameFactory = require('./gameFactory.js');
 
 class App {
 
-
     async start(){
+        let game = await this._askGameType();
+        let playersNumber = await this._askPlayersNumber(game);
+        let players = this._generatePlayers(playersNumber);
+        let deck = Deck.CreateDeck();
 
-        let gametype = await this.askGameType();
-        let playersNumber = await this.askPlayersNumber();
-
-        console.log(gametype, playersNumber);
-        console.log(Deck.CreateDeck());
+        console.log(game, players, deck);
+        game.create(players, deck);
     }
 
-    async askGameType(){
-        let gameType;
+    async _askGameType(){
+        let chosenGame;
+
         do {
-            gameType = await UserInput.read("Game type () : ");
-            console.log(gameType + " chosen");
-        } while (gameType !== "b");
-        return gameType;
+            let gameArrays = "";
+            GameFactory.GetGameTypes().forEach((el) => { gameArrays += el.name + ", "; });
+            chosenGame = await UserInput.read("Choose a game type ( " +  gameArrays + " ... ) : ");
+        } while (!this._validGameChoice(chosenGame));
+
+        console.log(chosenGame + " chosen");
+        return GameFactory.GetGameTypes().filter( e => e.name === chosenGame)[0];
     }
 
-    async askPlayersNumber(){
-        let playerNumber = await UserInput.read("Players number (2-8) : ");
-        console.log(playerNumber + " game");
-        return playerNumber;
+    async _askPlayersNumber(game){
+        let playersNumber;
+
+        do{
+            playersNumber = await UserInput.read("Players number (" + game.playersMin + "-" +  game.playersMax + ") : ");
+        }while (playersNumber <= game.playersMin || playersNumber >= game.playersMax );
+
+        console.log(playersNumber + " game");
+        return playersNumber;
+    }
+
+    _validGameChoice(gameType){
+        return GameFactory.GetGameTypes().filter( e => e.name === gameType).length > 0;
+    }
+
+    _generatePlayers(playersNumber){
+        let players = [];
+        for(let i = 1; i <= playersNumber; ++i){
+            players.push({ name: "Player " + i, hand: []})
+        }
+        return players;
     }
 }
 
