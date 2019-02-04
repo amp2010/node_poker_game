@@ -7,13 +7,22 @@ const GameFactory = require('./gameFactory.js');
 class App {
 
     async start(){
+        let playAgain;
+
+        do {
+            this.play();
+            playAgain = await UserInput.read('Play again ? [Y/N] : ');
+        }while(playAgain !== 'N');
+
+        process.exit();
+    }
+
+    async play(){
         let game = await this._askGameType();
         let playersNumber = await this._askPlayersNumber(game);
         let players = this._generatePlayers(playersNumber);
         let deck = Deck.CreateDeck();
-
-        console.log(game, players, deck);
-        game.create(players, deck);
+        game.start(players, deck);
     }
 
     async _askGameType(){
@@ -25,7 +34,6 @@ class App {
             chosenGame = await UserInput.read("Choose a game type ( " +  gameArrays + " ... ) : ");
         } while (!this._validGameChoice(chosenGame));
 
-        console.log(chosenGame + " chosen");
         return GameFactory.GetGameTypes().filter( e => e.name === chosenGame)[0];
     }
 
@@ -34,9 +42,8 @@ class App {
 
         do{
             playersNumber = await UserInput.read("Players number (" + game.playersMin + "-" +  game.playersMax + ") : ");
-        }while (playersNumber <= game.playersMin || playersNumber >= game.playersMax );
+        }while (playersNumber < game.playersMin || playersNumber > game.playersMax );
 
-        console.log(playersNumber + " game");
         return playersNumber;
     }
 

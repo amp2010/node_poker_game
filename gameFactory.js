@@ -1,30 +1,35 @@
 'use strict';
 
+const Texas = require('./games/texas');
+
 class GameFactory{
 
     static StartTexasHoldEm(players, deck){
-        console.log("Texas Hold'em")
+        console.log("Texas Hold'em");
+        let texas = new Texas(players, deck);
+        texas.start();
     }
 
     static StartFerme(players, deck){
-        throw new Error("Sorry, Ferme is not yet implemented");
         console.log("Sorry, Ferme is not yet implemented");
-        process.exit(1);
+        process.exit();
     }
 
     static StartOhama(players, deck){
         console.log("Sorry, Ohama is not yet implemented");
+        process.exit();
     }
 
     static StartRoyal(players, deck){
         console.log("Sorry, Royale is not yet implemented");
+        process.exit();
     }
 
     static GetGameTypes(){
-        return [ { name: "Texas Hold'em Limit", playersMin: 2, playersMax: 9, create: this.StartTexasHoldEm },
-                 { name: 'Ohama', playersMin: 2, playersMax: 10, create: this.StartFerme },
-                 { name: 'Ferme', playersMin: 4, playersMax: 6, create: this.StartOhama },
-                 { name: 'Royal', playersMin: 3, playersMax: 7, create: this.StartRoyal } ];
+        return [ { name: "Texas Hold'em Limit", playersMin: 2, playersMax: 9, start: this.StartTexasHoldEm },
+                 { name: 'Ohama', playersMin: 2, playersMax: 10, start: this.StartOhama },
+                 { name: 'Ferme', playersMin: 4, playersMax: 6, start: this.StartFerme },
+                 { name: 'Royal', playersMin: 3, playersMax: 7, start: this.StartRoyal } ];
     }
 }
 
