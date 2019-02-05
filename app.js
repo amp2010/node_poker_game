@@ -1,7 +1,6 @@
 'use strict';
 
 const UserInput = require('./services/UserInput.js');
-const Deck = require('./deck.js');
 const GameFactory = require('./gameFactory.js');
 
 class App {
@@ -10,19 +9,18 @@ class App {
         let playAgain;
 
         do {
-            this.play();
+            this._play();
             playAgain = await UserInput.read('Play again ? [Y/N] : ');
         }while(playAgain !== 'N');
 
         process.exit();
     }
 
-    async play(){
-        let game = await this._askGameType();
-        let playersNumber = await this._askPlayersNumber(game);
+    async _play(){
+        let chosenGame = await this._askGameType();
+        let playersNumber = await this._askPlayersNumber(chosenGame);
         let players = this._generatePlayers(playersNumber);
-        let deck = Deck.CreateDeck();
-        game.start(players, deck);
+        chosenGame.create(players).start();
     }
 
     async _askGameType(){
@@ -30,11 +28,11 @@ class App {
 
         do {
             let gameArrays = "";
-            GameFactory.GetGameTypes().forEach((el) => { gameArrays += el.name + ", "; });
+            GameFactory.getGameTypes().forEach((el) => { gameArrays += el.name + ", "; });
             chosenGame = await UserInput.read("Choose a game type ( " +  gameArrays + " ... ) : ");
         } while (!this._validGameChoice(chosenGame));
 
-        return GameFactory.GetGameTypes().filter( e => e.name === chosenGame)[0];
+        return GameFactory.getGameTypes().filter(e => e.name === chosenGame)[0];
     }
 
     async _askPlayersNumber(game){
@@ -48,7 +46,7 @@ class App {
     }
 
     _validGameChoice(gameType){
-        return GameFactory.GetGameTypes().filter( e => e.name === gameType).length > 0;
+        return GameFactory.getGameTypes().filter(e => e.name === gameType).length > 0;
     }
 
     _generatePlayers(playersNumber){

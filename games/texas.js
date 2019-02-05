@@ -1,14 +1,25 @@
 'use strict';
 
+const Deck = require('../deck.js');
+
 class Texas {
 
-    constructor (players, deck){
+    constructor (players){
         this.players = players;
-        this.deck = deck;
+        this.deck = Deck.createDeck();
     }
 
     start(){
-        console.log(this.players);
+        this.distributeCards();
+        this.deck = Deck.shuffle(this.deck);
+        this.doFlop();
+        this.doTurn();
+        this.doRiver();
+        this.verifyWinner();
+    }
+
+    distributeCards(){
+
     }
 }
 

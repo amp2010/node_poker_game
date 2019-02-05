@@ -2,17 +2,17 @@
 
 class Deck{
 
-    static CreateDeck(){
+    static createDeck(){
         let deck = [];
-        Deck._GetCardsSuits().forEach(function (suit) {
-            Deck._GetCardsValue().forEach(function (card) {
+        Deck._getCardsSuits().forEach(function (suit) {
+            Deck._getCardsValue().forEach(function (card) {
                 deck.push({suit: suit, value: card.value, name: card.name});
             });
         });
-        return this._ShuffleDeck(deck);
+        return this.shuffle(deck);
     }
 
-    static _GetCardsValue(){
+    static _getCardsValue(){
         return [
             { value: 2, name: 2 },
             { value: 3, name: 3 },
@@ -30,11 +30,11 @@ class Deck{
         ];
     }
 
-    static _GetCardsSuits(){
+    static _getCardsSuits(){
         return [ 'Clubs' , 'Diamonds' , 'Hearts' , 'Spades' ];
     }
 
-    static _ShuffleDeck(deck){
+    static shuffle(deck){
         for (let i = deck.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [deck[i], deck[j]] = [deck[j], deck[i]];
