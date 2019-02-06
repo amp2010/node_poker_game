@@ -2,17 +2,22 @@
 
 class Deck{
 
-    static createDeck(){
-        let deck = [];
-        Deck._getCardsSuits().forEach(function (suit) {
-            Deck._getCardsValue().forEach(function (card) {
-                deck.push({suit: suit, value: card.value, name: card.name});
-            });
-        });
-        return this.shuffle(deck);
+    constructor(builder){
+        this.deck = builder.deck;
+        this.addBasicCards();
+        this.deck = Deck.shuffle(this.deck);
+        return builder;
     }
 
-    static _getCardsValue(){
+    addBasicCards(){
+        Deck._getCardsSuits().forEach((suit) => {
+            Deck._getBasicCardsValue().forEach((card) => {
+               this.deck.push({suit: suit, value: card.value, name: card.name});
+            });
+        });
+    }
+
+    static _getBasicCardsValue(){
         return [
             { value: 2, name: 2 },
             { value: 3, name: 3 },
@@ -23,10 +28,15 @@ class Deck{
             { value: 8, name: 8 },
             { value: 9, name: 9 },
             { value: 10, name: 10 },
+            { value: 14, name: 'Ace' }
+        ];
+    }
+
+    static _getFacesCardsValue(){
+        return [
             { value: 11, name: 'Jack' },
             { value: 12, name: 'Queen' },
-            { value: 13, name: 'King' },
-            { value: 14, name: 'Ace' }
+            { value: 13, name: 'King' }
         ];
     }
 
@@ -42,5 +52,30 @@ class Deck{
         return deck;
     }
 }
+
+Deck.Builder = class {
+    constructor() {
+        this.deck = [];
+    };
+
+    withJoker(){
+        this.deck.push({suit: 'none', value: 9000, name: 'Joker'});
+        this.deck.push({suit: 'none', value: 9001, name: 'Colored Joker'});
+        return this;
+    }
+
+    withFaces(){
+        Deck._getCardsSuits().forEach((suit) => {
+            Deck._getFacesCardsValue().forEach((card) => {
+                this.deck.push({suit: suit, value: card.value, name: card.name});
+            });
+        });
+        return this;
+    }
+
+    build(){
+        return new Deck(this);
+    }
+};
 
 module.exports = Deck;

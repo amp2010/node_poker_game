@@ -6,10 +6,13 @@ class Texas {
 
     constructor (players){
         this.players = players;
-        this.deck = Deck.createDeck();
+        this.deck = new Deck.Builder()
+                            .withFaces()
+                            .build();
     }
 
     start(){
+        console.log(this.deck);
         this.distributeCards();
         this.deck = Deck.shuffle(this.deck);
         this.doFlop();
@@ -19,6 +22,22 @@ class Texas {
     }
 
     distributeCards(){
+
+    }
+
+    doFlop() {
+
+    }
+
+    doTurn() {
+
+    }
+
+    doRiver() {
+
+    }
+
+    verifyWinner() {
 
     }
 }
