@@ -74,7 +74,7 @@ Deck.Builder = class {
     }
 
     build(){
-        return new Deck(this);
+        return new Deck(this).deck;
     }
 };
 
