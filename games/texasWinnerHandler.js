@@ -113,6 +113,7 @@ class Handler{
      * @private
      */
     _getPlayerCardsCountOf(player, occurence){
+        // filter ?
         let a = Object.keys(player.cardsCount).find(key => player.cardsCount[key] === occurence);
         return (parseInt(a) || false);
     }
