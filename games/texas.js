@@ -1,6 +1,7 @@
 'use strict';
 
 const Deck = require('../deck.js');
+const Handler = require('./texasWinnerHandler.js');
 
 class Texas {
 
@@ -44,7 +45,7 @@ class Texas {
     }
 
     verifyWinner() {
-        console.log("Deck: ");
+        /*console.log("Deck: ");
         console.log(this.deck);
         console.log("Players: ");
         this.players.forEach((player) => {
@@ -52,7 +53,9 @@ class Texas {
             console.log(player.hand);
         });
         console.log("Board: ");
-        console.log(this.board);
+        console.log(this.board);*/
+
+        new Handler().handle(this.board, this.players);
     }
 
     distributeFirstCard(){

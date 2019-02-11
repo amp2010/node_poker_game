@@ -9,7 +9,7 @@ class App {
         let playAgain;
 
         do {
-            this._play();
+            await this._play();
             playAgain = await UserInput.read('Play again ? [Y/N] : ');
         }while(playAgain !== 'N');
 
