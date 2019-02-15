@@ -28,7 +28,6 @@ class Handler {
         console.log("************ Winner ************");
         winners.forEach((player) => {
             console.log("Winner: " + player.name + " with " + player.handName);
-            console.log(player.hand);
         });
     }
 
