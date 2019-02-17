@@ -15,7 +15,6 @@ class Handler {
     }
 
     displayPlayersHand(){
-        console.log("************ Result ************");
         this.players.forEach((player) => {
             console.log(player.name + " has " + player.handName + " (" + player.handValue + ")");
         });

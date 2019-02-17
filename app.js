@@ -10,8 +10,8 @@ class App {
 
         do {
             await this._play();
-            playAgain = await UserInput.read('Play again ? [Y/N] : ');
-        }while(playAgain !== 'N');
+            playAgain = await UserInput.read('Play again ? [y/n] : ');
+        }while(playAgain !== 'n');
 
         process.exit();
     }

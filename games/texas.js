@@ -20,6 +20,14 @@ class Texas {
         this.doTurn();
         this.doRiver();
         this.verifyWinner();
+        this.displayEndOfGameResult();
+    }
+
+    displayEndOfGameResult() {
+        console.log("************ Result ************");
+        console.log("Board: " + this.board.map((card) => { return (card.name + " of " + card.suit); }).join(", "));
+        this.handler.displayPlayersHand();
+        this.handler.displayWinner();
     }
 
     distributeCards(){
@@ -45,10 +53,8 @@ class Texas {
     }
 
     verifyWinner() {
-        let handler = new TexasHandler(this.board, this.players);
-        handler.handle();
-        handler.displayPlayersHand();
-        handler.displayWinner();
+        this.handler = new TexasHandler(this.board, this.players);
+        this.handler.handle();
     }
 
     distributeFirstCard(){
