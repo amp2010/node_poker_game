@@ -1,7 +1,7 @@
 'use strict';
 
 const Deck = require('../deck.js');
-const TexasHandler = require('./texasWinnerHandler.js');
+const TexasHandler = require('./texasHandler.js');
 
 class Texas {
 
@@ -26,8 +26,12 @@ class Texas {
     _displayEndOfGameResult() {
         console.log("************ Result ************");
         console.log("Board: " + this.board.map((card) => { return (card.name + " of " + card.suit); }).join(", "));
-        this.handler.displayPlayersHand();
-        this.handler.displayWinner();
+
+        let winners = this.handler.getWinner();
+        console.log("************ Winner ************");
+        winners.forEach((player) => {
+            console.log("Winner: " + player.name + " with " + player.handName);
+        });
     }
 
     _distributeCards(){

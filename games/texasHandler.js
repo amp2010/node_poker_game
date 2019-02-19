@@ -36,20 +36,10 @@ class Handler {
         });
     }
 
-    displayPlayersHand(){
-        this.players.forEach((player) => {
-            console.log(player.name + " has " + player.handName + " (" + player.handValue + ")");
-        });
-    }
-
-    displayWinner() {
+    getWinner() {
+        this._displayPlayersHand();
         let highestScore = Math.max.apply(Math, this.players.map((player) => { return player.handValue; }));
-        let winners = this.players.filter((player) => { return player.handValue === highestScore; });
-
-        console.log("************ Winner ************");
-        winners.forEach((player) => {
-            console.log("Winner: " + player.name + " with " + player.handName);
-        });
+        return this.players.filter((player) => { return player.handValue === highestScore; });
     }
 
     _setPlayerHand(player){
@@ -79,7 +69,6 @@ class Handler {
     }
 
     _handleStraight(player) {
-
         /** Sort hand by card value **/
         player.hand.sort((a, b) => {
             if(a.value < b.value) { return -1; }
@@ -171,12 +160,12 @@ class Handler {
         return Math.max.apply(Math, player.hand.map((card) => { return card.value; }));
     }
 
-    /**
-     * @param player
-     * @param occurrence: number of time the same card should be found in the player's hand
-     * @return array: returns an array containing the cards respecting the occurrence
-     * @private
-     */
+    _displayPlayersHand(){
+        this.players.forEach((player) => {
+            console.log(player.name + " has " + player.handName + " (" + player.handValue + ")");
+        });
+    }
+
     _getPlayerCardsCountOf(player, occurrence) {
         return Object.keys(player.cardsCount).filter(key => player.cardsCount[key] === occurrence);
     }
