@@ -28,11 +28,11 @@ class App {
 
         do {
             let gameArrays = "";
-            GameFactory.getGameTypes().forEach((el) => { gameArrays += el.name + ", "; });
+            GameFactory.getGamesType().forEach((el) => { gameArrays += el.name + ", "; });
             chosenGame = await UserInput.read("Choose a game type ( " +  gameArrays + " ... ) : ");
         } while (!this._validGameChoice(chosenGame));
 
-        return GameFactory.getGameTypes().filter(e => e.name === chosenGame)[0];
+        return GameFactory.getGamesType().filter(e => e.name === chosenGame)[0];
     }
 
     async _askPlayersNumber(game){
@@ -46,7 +46,7 @@ class App {
     }
 
     _validGameChoice(gameType){
-        return GameFactory.getGameTypes().filter(e => e.name === gameType).length > 0;
+        return GameFactory.getGamesType().filter(e => e.name === gameType).length > 0;
     }
 
     _generatePlayers(playersNumber){

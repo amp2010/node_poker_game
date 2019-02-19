@@ -5,7 +5,6 @@ const Ferme = require('./games/ferme');
 const Ohama = require('./games/ohama');
 const Royal = require('./games/royal');
 
-
 class GameFactory{
 
     static createTexasHoldEm(players){
@@ -24,7 +23,7 @@ class GameFactory{
         return new Royal(players);
     }
 
-    static getGameTypes(){
+    static getGamesType(){
         return [ { name: "Texas", playersMin: 2, playersMax: 9, create: this.createTexasHoldEm },
                  { name: 'Ohama', playersMin: 2, playersMax: 10, create: this.createOhama },
                  { name: 'Ferme', playersMin: 4, playersMax: 6, create: this.createFerme },

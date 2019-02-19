@@ -14,64 +14,70 @@ class Texas {
     }
 
     start(){
-        this.distributeCards();
+        this._distributeCards();
         this.deck = Deck.shuffle(this.deck);
-        this.doFlop();
-        this.doTurn();
-        this.doRiver();
-        this.verifyWinner();
-        this.displayEndOfGameResult();
+        this._doFlop();
+        this._doTurn();
+        this._doRiver();
+        this._verifyWinner();
+        this._displayEndOfGameResult();
     }
 
-    displayEndOfGameResult() {
+    _displayEndOfGameResult() {
         console.log("************ Result ************");
         console.log("Board: " + this.board.map((card) => { return (card.name + " of " + card.suit); }).join(", "));
         this.handler.displayPlayersHand();
         this.handler.displayWinner();
     }
 
-    distributeCards(){
-        this.distributeFirstCard();
-        this.distributeSecondCard();
+    _distributeCards(){
+        this._distributeFirstCard();
+        this._distributeSecondCard();
     }
 
-    doFlop() {
-        this.burnCard();
+    _doFlop() {
+        this._burnCard();
         this.board.push(this.deck.shift());
         this.board.push(this.deck.shift());
-        this.board.push(this.deck.shift());
-    }
-
-    doTurn() {
-        this.burnCard();
         this.board.push(this.deck.shift());
     }
 
-    doRiver() {
-        this.burnCard();
+    _doTurn() {
+        this._burnCard();
         this.board.push(this.deck.shift());
     }
 
-    verifyWinner() {
+    _doRiver() {
+        this._burnCard();
+        this.board.push(this.deck.shift());
+    }
+
+    _verifyWinner() {
         this.handler = new TexasHandler(this.board, this.players);
         this.handler.handle();
     }
 
-    distributeFirstCard(){
+    _distributeFirstCard(){
         this.players.forEach((player) => {
             player.hand.push(this.deck.shift());
         });
     }
 
-    distributeSecondCard(){
+    _distributeSecondCard(){
         this.players.forEach((player) => {
             player.hand.push(this.deck.shift());
         });
     }
 
-    burnCard(){
+    _burnCard(){
         /** Burns a card **/
         this.deck.shift();
+    }
+
+    _askPlayersForBet(){
+        this.players.forEach((player) => {
+            //TODO ask for bet amount
+        });
     }
 }
 
