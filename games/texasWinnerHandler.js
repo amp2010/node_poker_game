@@ -10,7 +10,9 @@ class Handler {
     handle() {
         this.players.forEach((player) => {
             this._setPlayerHand(player);
-            this._handleFlush(player);
+            this.requestHandler = this._getRequestHandler();
+            //this._handleFlush(player);
+            this.requestHandler.next(player);
         });
     }
 
@@ -38,6 +40,7 @@ class Handler {
 
     _handleFlush(player) {
 
+        console.log(this.requestHandler);
         /** Sort hand by suits **/
         player.hand.sort((a, b) => a.suit.localeCompare(b.suit));
 
@@ -54,7 +57,7 @@ class Handler {
             }
         }
 
-        (!player.handValue) ? this._handleStraight(player) : false;
+        (!player.handValue) ? this.requestHandler.next(player) : false;
     }
 
     _handleStraight(player) {
@@ -171,6 +174,28 @@ class Handler {
         }
         return (straightCards >= 5);
     }
+
+    _getRequestHandler(){
+        let requestHandler = {
+            index: 0,
+            handlers: [
+                this._handleFlush,
+                this._handleStraight,
+                this._handleFours,
+                this._handleFullHouse,
+                this._handleThrees,
+                this._handlePairs,
+                this._handleRest
+            ],
+            next: function (player) {
+                console.log(requestHandler.index);
+                return requestHandler.handlers[requestHandler.index++](player);
+            }
+        };
+
+        return requestHandler;
+    }
+
 }
 
 module.exports = Handler;
