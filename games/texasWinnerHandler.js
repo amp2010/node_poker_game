@@ -5,12 +5,34 @@ class Handler {
     constructor(board, players){
         this.board = board;
         this.players = players;
+        this.handlers = [
+            this._handleFlush,
+            this._handleStraight,
+            this._handleFours,
+            this._handleFullHouse,
+            this._handleThrees,
+            this._handlePairs,
+            this._handleRest
+        ];
+
+        this.HAND_SCORE = {
+            StraightFlush: 800,
+            Flush: 700,
+            Straight: 600,
+            Fours: 500,
+            FullHouse: 400,
+            Threes: 300,
+            TwoPairs: 200,
+            OnePair: 100,
+            Nothing: 0
+        };
     };
 
     handle() {
         this.players.forEach((player) => {
+            this.handlerIndex = 0;
             this._setPlayerHand(player);
-            this._handleFlush(player);
+            this._next(player);
         });
     }
 
@@ -46,14 +68,14 @@ class Handler {
 
             let highestCard = this._getPlayerHighestCard(player);
             player.handName = "Flush";
-            player.handValue = 700 + parseInt(highestCard);
+            player.handValue = this.HAND_SCORE.Flush + parseInt(highestCard);
 
             if(this._hasStraight(player.hand)){
-                player.handValue = 800 + parseInt(highestCard);
+                player.handValue = this.HAND_SCORE.StraightFlush + parseInt(highestCard);
             }
         }
 
-        (!player.handValue) ? this._handleStraight(player) : false;
+        (!player.handValue) ? this._next(player) : false;
     }
 
     _handleStraight(player) {
@@ -67,10 +89,10 @@ class Handler {
 
         if(this._hasStraight(player.hand)) {
             player.handName = "Straight";
-            player.handValue = 600 + parseInt(this._getPlayerHighestCard(player));
+            player.handValue = this.HAND_SCORE.Straight + parseInt(this._getPlayerHighestCard(player));
         }
 
-        (!player.handValue) ? this._handleFours(player) : false;
+        (!player.handValue) ? this._next(player) : false;
     }
 
     _handleFours(player) {
@@ -78,12 +100,12 @@ class Handler {
 
         if(fourOfAKind) {
             player.handName = "Four " + fourOfAKind[0];
-            player.handValue = 500
+            player.handValue = this.HAND_SCORE.Fours
                              + parseInt(fourOfAKind[0])
                              + this._getPlayerHighestCard(player);
         }
 
-        (!player.handValue) ? this._handleFullHouse(player) : false;
+        (!player.handValue) ? this._next(player) : false;
     }
 
     _handleFullHouse(player) {
@@ -94,12 +116,12 @@ class Handler {
 
         if(bestTwo !== null && bestThree !== null) {
             player.handName = "Full house of three " + bestThree + " and two " + bestTwo;
-            player.handValue = 400
+            player.handValue = this.HAND_SCORE.FullHouse
                              + parseInt(bestTwo)
                              + parseInt(bestThree);
         }
 
-        (!player.handValue) ? this._handleThrees(player) : false;
+        (!player.handValue) ? this._next(player) : false;
     }
 
     _handleThrees(player) {
@@ -108,12 +130,12 @@ class Handler {
 
         if(bestThree) {
             player.handName = "Three " + bestThree;
-            player.handValue = 300
+            player.handValue = this.HAND_SCORE.Threes
                              + parseInt(bestThree)
                              + this._getPlayerHighestCard(player);
         }
 
-        (!player.handValue) ? this._handlePairs(player) : false;
+        (!player.handValue) ? this._next(player) : false;
     }
 
     _handlePairs(player) {
@@ -123,7 +145,7 @@ class Handler {
 
         if(pair) {
             player.handName = "Pair of " + bestPair;
-            player.handValue = 100
+            player.handValue = this.HAND_SCORE.OnePair
                 + (parseInt(bestPair) * 2)
                 + highestCard;
         }
@@ -131,18 +153,18 @@ class Handler {
         if(pair.length > 1) {
             let secondBestPair = pair[pair.length - 2];
             player.handName = "Two pair of " + bestPair + " and " + secondBestPair;
-            player.handValue = 200
+            player.handValue = this.HAND_SCORE.TwoPairs
                              + (parseInt(bestPair) * 2)
                              + highestCard;
         }
 
-        (!player.handValue) ? this._handleRest(player) : false;
+        (!player.handValue) ? this._next(player) : false;
     }
 
     _handleRest(player) {
         let highestCard = this._getPlayerHighestCard(player);
         player.handName = "Nothing but a " + highestCard;
-        player.handValue = highestCard;
+        player.handValue = this.HAND_SCORE.Nothing + highestCard;
     }
 
     _getPlayerHighestCard(player) {
@@ -169,6 +191,10 @@ class Handler {
             }
         }
         return (straightCards >= 5);
+    }
+
+    _next(player){
+        this.handlers[this.handlerIndex++].call(this, player);
     }
 }
 
